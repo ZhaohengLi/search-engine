@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>新闻搜索引擎</title>
+</head>
+
+<body>
+  <div class="jumbotron">
+    <h1>新闻搜索引擎设计</h1>
+    <p>程序设计夏季学期第三周大作业</p>
+  </div>
+
+  <div style="margin:50px 500px">
+    <form action="/search" method="post" role='form'>
+      {% csrf_token %}
+      <h1>我们最近收集了很多新闻，您想看些什么？</h1>
+      <h1>{{showedtext}}</h1>
+        <br/><br/>
+      <div class="form-group">
+        <input type="text" class="form-control" id="name" name="searchinput"placeholder=" 请输入关键字 多个关键字间用空格隔开">
+        <br/>
+        <input type="text" class="form-control" id="name" name="stimeinput" placeholder="（可选）搜索中包含的最早新闻时间 输入格式为 20150308">
+        <br/>
+        <input type="text" class="form-control" id="name" name="etimeinput" placeholder="（可选）搜索中包含的最晚新闻时间 输入格式为 20181018">
+        <br/>
+    </div>
+        <br/>
+        <button type="submit" class="btn btn-default">开始搜索</button>
+        <br/><br/>
+        <h1><a href="{% url 'allnewspagechangeto' 1 %}">或者你想看看我们都收集了什么？</a></h1>
+    </form>
+  </div>
+
+  <div class="container">
+      <br/><br/>
+    <h1>近些天发生了这些事情：</h1>
+    <br/>
+    <div class="row">
+    {%for res in results%}
+    <div class="col-md-4">
+      <a href="{% url 'newsdetail' res.id %}" style="font-size:25px">{{res.title}}</a>
+      <p>{{res.date}}</p>
+      <p>{{res.summary}}</p>
+      <br/>
+      <br/>
+    </div>
+    {%endfor%}
+    </div>
+ </div>
+
+  <div class="jumbotron">
+    <p style="text-align:right">清华大学 计算机系 李曌珩 2017050025 cainetatum@foxmail.com<p>
+  </div>
+
+</body>
+
+</html>

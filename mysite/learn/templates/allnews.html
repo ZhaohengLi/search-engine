@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.1.0/css/bootstrap.min.css">
+  <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
+  <script src="https://cdn.bootcss.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+  <title>所有新闻</title>
+</head>
+<body>
+  <div class="jumbotron">
+    <h1>这是我们收集到的所有新闻:</h1>
+    <br/>
+    <p>我们对得到的 {{newscnt}} 条新闻进行了分页展示，共有 {{pagecnt}} 页，当前您所浏览的是第 {{currntpagecnt}} 页。<a href="{% url 'home' %}">点击此处带您回到搜索首页。</a> </p>
+  </div>
+  <div class="container" id="news">
+    {%for res in results%}
+    <div class="card">
+      <div class="card-body">
+        <h2 class="card-title"><a href="{% url 'newsdetail' res.id %}" style="font-size:30px">{{res.title}}</a></h2>
+        <p class="card-text" style="font-size:15px">{{res.date}}</p>
+        <p class="card-text" style="font-size:25px">{{res.summary}}</p>
+          <br/><br/>
+      </div>
+    </div>
+    <br/><br/>
+    {%endfor%}
+  </div>
+
+<div class="container">
+  <ul class="pagination pagination-lg">
+    {%if haspre %}
+    <li class="page-item"><a class="page-link" href="{% url 'allnewspagechangeto' prepagecnt %}">上一页</a></li>
+    {% else %}
+    <li class="page-item disabled"><a class="page-link" href="#">上一页</a></li>
+    {% endif %}
+    <li class="page-item"><a class="page-link" href="{% url 'allnewspagechangeto' 1 %}">首页</a></li>
+    <li class="page-item"><a class="page-link" href="{% url 'allnewspagechangeto' pagecnt %}">尾页</a></li>
+    {%if hasnex %}
+    <li class="page-item"><a class="page-link" href="{% url 'allnewspagechangeto' nexpagecnt %}">下一页</a></li>
+    {% else %}
+    <li class="page-item disabled"><a class="page-link" href="#">下一页</a></li>
+    {%endif%}
+  </ul>
+</div>
+
+  <div class="jumbotron">
+    <p style="text-align:right">清华大学 计算机系 李曌珩 2017050025 cainetatum@foxmail.com<p>
+  </div>
+</body>
+</html>

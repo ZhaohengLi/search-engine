@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.1.0/css/bootstrap.min.css">
+  <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
+  <script src="https://cdn.bootcss.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+  <title>新闻详情</title>
+</head>
+
+<body>
+  <div class="jumbotron">
+    <h1>新闻详情页</h1>
+    <p><a href="{% url 'home' %}">点击此处带您回到搜索首页。</a></p>
+  </div>
+
+
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        <br/>
+        <h2 style="font-size:40px; text-align:center;">{{title}}</h2>
+        <br/><br/>
+        <p style="text-align:right;font-size:15px">{{date}}</p>
+        <a href="{{res.url}}" class="card-link"  style="font-size:15px">查看此新闻源出处</a>
+        <br/>
+      </div>
+        <br/><br/>
+        <div class="card-body"><pre style="text-align:left;font-size:25px">{{text}}</pre>
+        </div>
+        <div class="card-footer">
+            <br/><br/>
+          <div class="container" id="news">
+            <h1 style="font-size:40px">{{textdisplay}}</h1>
+              <br/><br/>
+            {%for res in results%}
+            <div class="card">
+              <div class="card-body">
+                <h2 class="card-title"><a href="{% url 'newsdetail' res.id %}" style="font-size:30px">{{res.title}}</a></h2>
+                <p class="card-text" style="font-size:15px">{{res.date}}</p>
+                <p class="card-text" style="font-size:25px">{{res.summary}}</p>
+                  <br/><br/>
+              </div>
+            </div>
+            <br/><br/>
+          {%endfor%}
+        </div>
+
+          </div>
+        </div>
+      </div>
+  <br/><br/>
+      <div class="jumbotron">
+        <p style="text-align:right">清华大学 计算机系 李曌珩 2017050025 cainetatum@foxmail.com<p>
+      </div>
+
+</body>
+
+</html>

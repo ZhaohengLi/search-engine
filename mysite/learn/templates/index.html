@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.1.0/css/bootstrap.min.css">
+  <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
+  <script src="https://cdn.bootcss.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+  <title>搜索结果</title>
+</head>
+
+<body>
+  <div class="jumbotron">
+    <h1>我们对 "{{orignalinput}}" 的检索结果如下：</h1>
+    <br/>
+    <p>本次检索耗时为{{costtime}}秒，为您找到{{newscnt}}条相关新闻。</p>
+    <p>我们对得到的新闻进行了分页展示，共有 {{pagecnt}} 页，当前您所浏览的是第 {{currntpagecnt}} 页。<a href="{% url 'home' %}">点击此处带您回到搜索首页。</a> </p>
+  </div>
+
+  <div class="container" id="news">
+    {%for res in results%}
+    <div class="card">
+      <div class="card-body">
+        <h2 class="card-title"><a href="{% url 'newsdetail' res.id %}" style="font-size:30px">{{res.title}}</a></h2>
+        <p class="card-text" style="font-size:15px">{{res.date}}</p>
+        <p class="card-text" style="font-size:25px">{{res.summary}}</p>
+          <br/><br/>
+      </div>
+    </div>
+    <br/><br/>
+    {%endfor%}
+    <script>
+      function SearchHighlight(idVal, keyword) {
+        var pucl = document.getElementById(idVal);
+        if ("" == keyword) return;
+        var temp = pucl.innerHTML;
+        var htmlReg = new RegExp("\<.*?\>", "i");
+        var arrA = new Array();
+        for (var i = 0; true; i++) {
+          var m = htmlReg.exec(temp);
+          if (m) {
+            arrA[i] = m;
+          } else {
+            break;
+          }
+          temp = temp.replace(m, "{[(" + i + ")]}");
+        }
+        words = unescape(keyword.replace(/\+/g, ' ')).split(/\s+/);
+        for (w = 0; w < words.length; w++) {
+          var r = new RegExp("(" + words[w].replace(/[(){}.+*?^$|\\\[\]]/g, "\\$&") + ")", "ig");
+          temp = temp.replace(r, "<b style='color:Red;'>$1</b>");
+        }
+        for (var i = 0; i < arrA.length; i++) {
+          temp = temp.replace("{[(" + i + ")]}", arrA[i]);
+        }
+        pucl.innerHTML = temp;
+      }
+      SearchHighlight("news", "{{orignalinput}}");
+    </script>
+  </div>
+<div class="container">
+  <ul class="pagination pagination-lg">
+    {%if haspre %}
+    <li class="page-item"><a class="page-link" href="{% url 'pagechangeto' prepagecnt %}">上一页</a></li>
+    {% else %}
+    <li class="page-item disabled"><a class="page-link" href="#">上一页</a></li>
+    {% endif %}
+    <li class="page-item"><a class="page-link" href="{% url 'pagechangeto' 1 %}">搜索结果首页</a></li>
+    <li class="page-item"><a class="page-link" href="{% url 'pagechangeto' pagecnt %}">搜索结果尾页</a></li>
+    {%if hasnex %}
+    <li class="page-item"><a class="page-link" href="{% url 'pagechangeto' nexpagecnt %}">下一页</a></li>
+    {% else %}
+    <li class="page-item disabled"><a class="page-link" href="#">下一页</a></li>
+    {%endif%}
+  </ul>
+</div>
+
+  <div class="jumbotron">
+    <p style="text-align:right">清华大学 计算机系 李曌珩 2017050025 cainetatum@foxmail.com<p>
+  </div>
+
+</body>
+
+</html>
